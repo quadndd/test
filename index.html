@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tết Vibe - Không Khí Tết</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hiệu ứng hoa rơi -->
+    <div class="falling-flowers"></div>
+    <!-- Hamburger menu (góc phải) + overlay -->
+    <button id="hamburger" class="hamburger" aria-label="Mở menu">☰</button>
+    <div id="menuOverlay" class="menu-overlay"></div>
+    <nav id="sideMenu" class="side-menu" aria-hidden="true">
+        <button id="menuClose" class="menu-close" aria-label="Đóng menu">✕</button>
+
+        <div id="userPanel" class="user-panel">
+            <div id="menuUserInfo" class="menu-user-info" style="display:none;">
+                <div class="user-avatar">👤</div>
+                <div>
+                    <div class="user-name" id="menuUserName">Người dùng</div>
+                    <div class="user-balance" id="menuUserBalance">Số dư: 0 đ</div>
+                </div>
+                <button id="menuLogout" class="auth-btn">Đăng xuất</button>
+            </div>
+            <div id="menuAuthLinks" class="menu-auth-links">
+                <button id="menuLogin" class="auth-btn">Đăng nhập</button>
+                <button id="menuRegister" class="auth-btn">Đăng ký</button>
+            </div>
+        </div>
+
+        <div id="rechargeSection" class="menu-recharge-section">
+            <button id="menuRecharge" class="recharge-btn">💳 Nạp Tiền</button>
+            <button id="menuHistory" class="history-btn">📋 Lịch Sử</button>
+        </div>
+
+        <ul class="menu-list">
+            <li><a href="#" data-target="wishes">Lời Chúc</a></li>
+            <li><a href="#" data-target="countdown">Đếm Ngược</a></li>
+            <li><a href="#" data-target="lucky">Lì Xì</a></li>
+            <li><a href="#" data-target="games">Trò Chơi</a></li>
+            <li><a href="#" data-target="audio">Âm Thanh</a></li>
+            <li><a href="#" data-target="top">Về Đầu Trang</a></li>
+        </ul>
+    </nav>
+
+    <!-- AUTH MODALS -->
+    <div id="loginModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <h3>Đăng nhập</h3>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Tên đăng nhập" required>
+                <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Đăng nhập</button>
+                    <button type="button" id="loginCancel" class="btn-ghost">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <h3>Đăng ký</h3>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="Tên đăng nhập" required>
+                <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Đăng ký</button>
+                    <button type="button" id="registerCancel" class="btn-ghost">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="rechargeModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <h3>💳 Nạp Tiền</h3>
+            <form id="rechargeForm">
+                <label>Chọn phương thức thanh toán:</label>
+                <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="bank" required>
+                        <span class="method-label">🏦 Ngân Hàng</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="momo" required>
+                        <span class="method-label">📱 Ví Momo</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="card" required>
+                        <span class="method-label">🎟️ Thẻ Nạp</span>
+                    </label>
+                </div>
+                
+                <input type="number" id="rechargeAmount" placeholder="Số tiền nạp (đ)" min="10000" step="10000" value="100000" required>
+                <div class="recharge-presets">
+                    <button type="button" class="preset-btn" data-amount="50000">50K</button>
+                    <button type="button" class="preset-btn" data-amount="100000">100K</button>
+                    <button type="button" class="preset-btn" data-amount="500000">500K</button>
+                    <button type="button" class="preset-btn" data-amount="1000000">1M</button>
+                </div>
+                
+                <div id="paymentInstruction" class="payment-instruction" style="display: none; background: #f5f5f5; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 12px; color: #333;"></div>
+                
+                <p id="rechargeMessage" class="recharge-message" style="text-align: center; margin: 10px 0; min-height: 20px;"></p>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Nạp Tiền</button>
+                    <button type="button" id="rechargeCancel" class="btn-ghost">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal" aria-hidden="true">
+        <div class="modal-content modal-large">
+            <h3>📋 Lịch Sử Giao Dịch</h3>
+            <div class="history-tabs">
+                <button class="history-tab-btn active" data-tab="all">Tất Cả</button>
+                <button class="history-tab-btn" data-tab="recharge">Nạp Tiền</button>
+                <button class="history-tab-btn" data-tab="bet">Cược</button>
+            </div>
+            <div id="historyList" class="history-list">
+                <p class="empty-message">Không có giao dịch nào</p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="historyClearBtn" class="btn-ghost">Xóa Tất Cả</button>
+                <button type="button" id="historyCloseBtn" class="btn-primary">Đóng</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Container chính -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎊 Chúc Mừng Năm Mới 🎊</h1>
+            <p class="subtitle">Tết Vibe - Không Khí Tết Đã Về</p>
+            <div id="serverStatus" class="server-status">Server: <span id="serverStatusText">Checking...</span></div>
+        </header>
+
+        <!-- Hình ảnh Tết -->
+        <div class="image-section">
+            <div class="flowers">🌸 🌸 🌸</div>
+            <p class="flowers-text">Hoa Đào - Hoa Mai Tết</p>
+        </div>
+
+        <!-- Câu chúc Tết ngẫu nhiên -->
+        <section id="wishes" class="wishes-section">
+            <p class="wish-text" id="wishText">Chúc bạn một năm mới may mắn!</p>
+            <button class="btn-wish">🎴 Lấy Lời Chúc Mới</button>
+        </section>
+
+        <!-- Đếm ngược Tết -->
+        <section id="countdown" class="countdown-section">
+            <h2>⏰ Đếm Ngược Đến Tết</h2>
+            <div class="countdown">
+                <div class="time-box">
+                    <span id="days" class="time-number">0</span>
+                    <p class="time-label">Ngày</p>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-number">0</span>
+                    <p class="time-label">Giờ</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutes" class="time-number">0</span>
+                    <p class="time-label">Phút</p>
+                </div>
+                <div class="time-box">
+                    <span id="seconds" class="time-number">0</span>
+                    <p class="time-label">Giây</p>
+                </div>
+            </div>
+            <p id="tetMessage" class="tet-message"></p>
+        </section>
+
+        <!-- Lì xì may mắn -->
+        <section id="lucky" class="lucky-money-section">
+            <h2>🧧 Lì Xì May Mắn</h2>
+            <button class="btn-lucky-money" id="btnLuckyMoney">💰 Nhận Lì Xì</button>
+            <div id="luckyResult" class="lucky-result"></div>
+        </section>
+
+        <!-- Minigame: Bầu Cua -->
+        <section id="games" class="games-section">
+            <h2>🎮 Trò Chơi</h2>
+            
+            <!-- Game Tabs -->
+            <div class="games-tabs">
+                <button class="game-tab-btn active" data-game="bau-cua">🎲 Bầu Cua</button>
+                <button class="game-tab-btn" data-game="xoc-dia">🪙 Xóc Đĩa</button>
+                <button class="game-tab-btn" data-game="tai-xiu">🎰 Tài Xỉu</button>
+            </div>
+            
+            <!-- Game Container: Bầu Cua -->
+            <div class="game-container active" id="game-bau-cua">
+                <h3>Bầu Cua</h3>
+                <p class="minigame-desc">Chọn ô (có thể nhiều ô, tối đa 2) rồi nhấn <strong>Quay</strong>. Mỗi lần biểu tượng của bạn xuất hiện, bạn được thắng.</p>
+                <div class="bau-board" id="bauBoard">
+                    <div class="bau-cell" data-symbol="deer">🦌</div>
+                    <div class="bau-cell" data-symbol="gourd">🎃</div>
+                    <div class="bau-cell" data-symbol="fish">🐟</div>
+                    <div class="bau-cell" data-symbol="crab">🦀</div>
+                    <div class="bau-cell" data-symbol="rooster">🐓</div>
+                    <div class="bau-cell" data-symbol="shrimp">🦐</div>
+                </div>
+                
+                <!-- Bet controls -->
+                <div class="bet-controls">
+                    <label for="betPerCell">Cược mỗi ô (đ):</label>
+                    <input type="number" id="betPerCell" min="1000" step="1000" value="10000">
+                    <span id="totalStake">Tổng cược: 0 đ</span>
+                </div>
+                <div id="betMessage" class="bet-message" aria-live="polite"></div>
+                
+                <button class="btn-minigame" id="btnSpin">🎲 Quay</button>
+                <div class="dice-result" id="diceResult" aria-live="polite"></div>
+                <p class="game-balance" id="gameBalance">Số dư chơi: 0 đ</p>
+            </div>
+            
+            <!-- Game Container: Xóc Đĩa -->
+            <div class="game-container hidden" id="game-xoc-dia">
+                <h3>Xóc Đĩa</h3>
+                <p class="minigame-desc">Chọn <strong>Chẵn</strong> hoặc <strong>Lẻ</strong>, đặt cược, rồi nhấn <strong>Quay</strong> để xem kết quả.</p>
+                <div class="xoc-dia-choices">
+                    <label class="choice-btn">
+                        <input type="radio" name="xocDiaChoice" value="even" required>
+                        <span class="choice-label">🟢 Chẵn</span>
+                    </label>
+                    <label class="choice-btn">
+                        <input type="radio" name="xocDiaChoice" value="odd" required>
+                        <span class="choice-label">🔴 Lẻ</span>
+                    </label>
+                </div>
+                
+                <div class="game-bet-controls">
+                    <label for="xocDiaBet">Đặt cược (đ):</label>
+                    <input type="number" id="xocDiaBet" min="1000" step="1000" value="10000" required>
+                </div>
+                
+                <button class="btn-minigame" id="btnXocDia">🪙 Quay</button>
+                
+                <div class="game-result" id="xocDiaResult"></div>
+                <div id="xocDiaMessage" class="bet-message" aria-live="polite"></div>
+                <p class="game-balance" id="xocDiaBalance">Số dư: 0 đ</p>
+            </div>
+            
+            <!-- Game Container: Tài Xỉu -->
+            <div class="game-container hidden" id="game-tai-xiu">
+                <h3>Tài Xỉu</h3>
+                <p class="minigame-desc">Roll 3 dice. Tổng ≥ 11 là <strong>Tài</strong>, tổng ≤ 10 là <strong>Xỉu</strong>. Chọn và cược!</p>
+                <div class="tai-xiu-choices">
+                    <label class="choice-btn">
+                        <input type="radio" name="taiXiuChoice" value="tai" required>
+                        <span class="choice-label">📈 Tài (≥ 11)</span>
+                    </label>
+                    <label class="choice-btn">
+                        <input type="radio" name="taiXiuChoice" value="xiu" required>
+                        <span class="choice-label">📉 Xỉu (≤ 10)</span>
+                    </label>
+                </div>
+                
+                <div class="game-bet-controls">
+                    <label for="taiXiuBet">Đặt cược (đ):</label>
+                    <input type="number" id="taiXiuBet" min="1000" step="1000" value="10000" required>
+                </div>
+                
+                <button class="btn-minigame" id="btnTaiXiu">🎰 Roll</button>
+                
+                <div class="dice-display" id="diceDisplay"></div>
+                <div class="game-result" id="taiXiuResult"></div>
+                <div id="taiXiuMessage" class="bet-message" aria-live="polite"></div>
+                <p class="game-balance" id="taiXiuBalance">Số dư: 0 đ</p>
+            </div>
+        </section>
+
+        <!-- Âm thanh -->
+        <section id="audio" class="audio-section">
+            <label class="audio-toggle">
+                <input type="checkbox" id="audioToggle">
+                <span>🎵 Bật Nhạc Tết</span>
+            </label>
+            
+            <!-- Điều chỉnh âm lượng -->
+            <div class="volume-control">
+                <label for="volumeSlider">🔊 Âm Lượng:</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider">
+                <span id="volumeValue">70%</span>
+            </div>
+            
+            <!-- Lặp lại nhạc -->
+            <div class="repeat-control">
+                <button id="repeatBtn" class="repeat-btn" title="Bật/tắt lặp lại">🔁 Lặp Lại</button>
+                <span id="repeatStatus">Đang lặp lại</span>
+            </div>
+            
+            <audio id="tetSound" loop>
+                <source src="sounds/tet.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>✨ Tết Vibe - Mang Không Khí Tết Đến Bạn ✨</p>
+            <p>Chúc bạn và gia đình một năm mới an khang, thịnh vượng!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
