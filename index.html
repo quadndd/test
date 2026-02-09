@@ -2,27 +2,83 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Loading...</title>
-    <style>
-        body {
-            margin: 0;
-            background: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tết Vibe - Không Khí Tết</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Hiệu ứng hoa rơi -->
+    <div class="falling-flowers"></div>
+    
+    <!-- Container chính -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎊 Chúc Mừng Năm Mới 🎊</h1>
+            <p class="subtitle">Tết Vibe - Không Khí Tết Đã Về</p>
+        </header>
 
-    <!-- DOI LINK ANH O DAY -->
-    <img src="anh.jpg" alt="troll">
+        <!-- Hình ảnh Tết -->
+        <div class="image-section">
+            <div class="flowers">🌸 🌸 🌸</div>
+            <p class="flowers-text">Hoa Đào - Hoa Mai Tết</p>
+        </div>
 
+        <!-- Câu chúc Tết ngẫu nhiên -->
+        <section class="wishes-section">
+            <p class="wish-text" id="wishText">Chúc bạn một năm mới may mắn!</p>
+            <button class="btn-wish">🎴 Lấy Lời Chúc Mới</button>
+        </section>
+
+        <!-- Đếm ngược Tết -->
+        <section class="countdown-section">
+            <h2>⏰ Đếm Ngược Đến Tết</h2>
+            <div class="countdown">
+                <div class="time-box">
+                    <span id="days" class="time-number">0</span>
+                    <p class="time-label">Ngày</p>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-number">0</span>
+                    <p class="time-label">Giờ</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutes" class="time-number">0</span>
+                    <p class="time-label">Phút</p>
+                </div>
+                <div class="time-box">
+                    <span id="seconds" class="time-number">0</span>
+                    <p class="time-label">Giây</p>
+                </div>
+            </div>
+            <p id="tetMessage" class="tet-message"></p>
+        </section>
+
+        <!-- Lì xì may mắn -->
+        <section class="lucky-money-section">
+            <h2>🧧 Lì Xì May Mắn</h2>
+            <button class="btn-lucky-money" id="btnLuckyMoney">💰 Nhận Lì Xì</button>
+            <div id="luckyResult" class="lucky-result"></div>
+        </section>
+
+        <!-- Âm thanh -->
+        <section class="audio-section">
+            <label class="audio-toggle">
+                <input type="checkbox" id="audioToggle">
+                <span>🎵 Bật Nhạc Tết</span>
+            </label>
+            <audio id="tetSound" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>✨ Tết Vibe - Mang Không Khí Tết Đến Bạn ✨</p>
+            <p>Chúc bạn và gia đình một năm mới an khang, thịnh vượng!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
